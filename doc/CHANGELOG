@@ -12,8 +12,8 @@ Version 1.0 (roadmap)
 Version 0.3 (planned)
 ---------------------
 - Blink lights during setup
-- Create http response
-- Implement custom template
++ Create http response
++ Implement custom template
 
 
 Version 0.2 (24-01-2012)
