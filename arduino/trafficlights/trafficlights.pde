@@ -52,6 +52,7 @@ void setup() {
   
   // Switch off power/progress led
   digitalWrite(7, LOW);
+  Serial.println("");
 }
 
 /**
@@ -63,29 +64,47 @@ void setup() {
 void loop() {
   // Listen for incoming clients
   Client client = server.available();
+  String requestFirstLine = "";
+
   if (client) {
+    // Print debug
+    Serial.println("Accepted client");
 
     // An http request ends with a blank line
     boolean currentLineIsBlank = true;
+    // Only the first line of the request is needed
+    boolean firstLine = true;
 
     while (client.connected()) {
       if (client.available()) {
+        // Append the character to get the uri string
         char c = client.read();
+        if (firstLine) {
+          requestFirstLine += c;
+        }
+
         // If you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so the reply can be sent
         if (c == '\n' && currentLineIsBlank) {
+          // Print request params
+          Serial.print("- Request Info:");
+          Serial.print(requestFirstLine);
+
+          // Switch next led
+          next();
+          
           // Send a standard http response header
           client.println("HTTP/1.1 200 OK");
           client.println("Content-Type: text/html");
           client.println();
 
-          next();
           break;
         }
         if (c == '\n') {
           // New line found
           currentLineIsBlank = true;
+          firstLine = false;
         } 
         else if (c != '\r') {
           // Next line contains a character
@@ -99,6 +118,7 @@ void loop() {
 
     // close the connection:
     client.stop();
+    Serial.println("");
   }
 }
 
