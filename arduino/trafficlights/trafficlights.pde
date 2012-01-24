@@ -17,7 +17,7 @@
 /**
  * Initialize variables
  */
-int current = 4;
+int current = 6;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 192,168,1,99 };
 Server server(80);
@@ -53,6 +53,11 @@ void setup() {
   // Start the webserver
   Serial.println("Starting webserver");
   server.begin();
+  
+  // Loop leds 3x3 times
+  for(int i = 0; i<13; i++) {
+    next();
+  }
   
   // Switch off power/progress led
   digitalWrite(7, LOW);
