@@ -12,6 +12,6 @@ Version 1.0 (roadmap)
 
 Version 0.1 (planned)
 ---------------------
-- Create basic project structure
++ Create basic project structure
 - Add serial support for debugging purposes
 - Blink three leds
