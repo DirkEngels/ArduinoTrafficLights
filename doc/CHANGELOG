@@ -11,8 +11,8 @@ Version 1.0 (roadmap)
 
 Version 0.2 (planned)
 ---------------------
-- Add webserver support
-- Get request params
++ Add webserver support
++ Get request params
 - Switch led according params
 
 
