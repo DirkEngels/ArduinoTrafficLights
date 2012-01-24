@@ -17,7 +17,7 @@
 /**
  * Initialize variables
  */
-int current = 4;
+int current = 6;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 192,168,1,99 };
 Server server(80);
@@ -25,7 +25,7 @@ int stateGreen = 0;
 int stateYellow = 0;
 int stateRed = 0;
 int stateProgress = 0;
-
+String webRoot = "http://192.168.1.59/tmp/";
 
 /**
  * Setup
@@ -53,6 +53,11 @@ void setup() {
   // Start the webserver
   Serial.println("Starting webserver");
   server.begin();
+  
+  // Loop leds 3x3 times
+  for(int i = 0; i<13; i++) {
+    next();
+  }
   
   // Switch off power/progress led
   digitalWrite(7, LOW);
@@ -90,18 +95,14 @@ void loop() {
         // If you've gotten to the end of the line (received a newline
         // character) and the line is blank, the http request has ended,
         // so the reply can be sent
-        if (c == '\n' && currentLineIsBlank) {
-          // Switch next led
-//          next();
-          
+        if (c == '\n' && currentLineIsBlank) {          
           // Switch leds according get request params
           params(requestFirstLine);
-
           
-          // Send a standard http response header
-          client.println("HTTP/1.1 200 OK");
-          client.println("Content-Type: text/html");
-          client.println();
+          // Send Response
+          header(client);
+          body(client);
+          footer(client);
 
           break;
         }
@@ -208,5 +209,114 @@ void params(String requestFirstLine) {
     stateGreen = stateYellow = stateRed = 0;
     Serial.println("- Switching all lights to OFF!");
   }
+}
+
+
+/**
+ * Header
+ */
+void header(Client client) {
+  // Send standard header response
+  client.println("HTTP/1.1 200 OK");
+  client.println("Content-Type: text/html");
+  client.println();
+
+  // HTML Header
+  client.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+  client.println("<html>");
+  client.println("<head>");
+  client.println("  <title>Ibuildings Traffic Light</title>");
+  client.println("  <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\">");
+  client.print("  <link rel=\"stylesheet\" href=\"");
+  client.print(webRoot);
+  client.println("style.css\" type=\"text/css\" />");
+  client.println("</head>");
+  client.println("<body>");
+  client.println("<div id=\"centered\">");
+  client.println("<a href=\"http://www.ibuildings.nl/\" target=\"_blank\">");
+  client.print("<img id=\"logo\" src=\"");
+  client.print(webRoot);
+  client.println("logo.jpg\" alt=\"Ibuildings Logo\" width=\"350\" height=\"85\" border=\"0\" />");
+  client.println("</a>");
+}
+
+
+/**
+ * Body
+ */
+void body(Client client) {
+  // HTML Header
+  client.println("<div id=\"lights\">");
+  
+  // Green
+  client.print("  <div class=\"circle ");
+  if (stateGreen == 1) {
+    client.print("green");
+  } else {
+    client.print("gray");
+  }
+  client.println("\"></div>");
+  client.println("  <form action=\"/\" method=\"GET\">");
+  client.print("    <input type=\"submit\" name=\"green\" value=\"");
+  if (stateGreen == 1) {
+    client.print("off");
+  } else {
+    client.print("on");
+  }
+  client.println("\" />");
+  client.println("  </form>");
+
+  // Yellow
+  client.print("  <div class=\"circle ");
+  if (stateYellow == 1) {
+    client.print("yellow");
+  } else {
+    client.print("gray");
+  }
+  client.println("\"></div>");
+  client.println("  <form action=\"/\" method=\"GET\">");
+  client.print("    <input type=\"submit\" name=\"yellow\" value=\"");
+  if (stateYellow== 1) {
+    client.print("off");
+  } else {
+    client.print("on");
+  }
+  client.println("\" />");
+  client.println("  </form>");
+
+  // Red
+  client.print("  <div class=\"circle ");
+  if (stateRed == 1) {
+    client.print("red");
+  } else {
+    client.print("gray");
+  }
+  client.println("\"></div>");
+  client.println("  <form action=\"/\" method=\"GET\">");
+  client.print("    <input type=\"submit\" name=\"red\" value=\"");
+  if (stateRed== 1) {
+    client.print("off");
+  } else {
+    client.print("on");
+  }
+  client.println("\" />");
+  client.println("  </form>");
+  
+  client.println("</div>");
+}
+
+
+/**
+ * Footer
+ */
+void footer(Client client) {
+  // HTML Footer
+  client.println("<div id=\"disclaimer\">");
+  client.println("  Created by: <a href=\"http://www.dirkengels.com\" target=\"_blank\">Dirk Engels</a>");
+  client.println("  Used by: <a href=\"http://www.ibuildings.nl\" target=\"_blank\">Ibuildings</a>");
+  client.println("</div>");
+  client.println("</div>");
+  client.println("</body>");
+  client.println("</html>");
 }
 
