@@ -21,6 +21,10 @@ int current = 4;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 byte ip[] = { 192,168,1,99 };
 Server server(80);
+int stateGreen = 0;
+int stateYellow = 0;
+int stateRed = 0;
+int stateProgress = 0;
 
 
 /**
@@ -87,12 +91,12 @@ void loop() {
         // character) and the line is blank, the http request has ended,
         // so the reply can be sent
         if (c == '\n' && currentLineIsBlank) {
-          // Print request params
-          Serial.print("- Request Info:");
-          Serial.print(requestFirstLine);
-
           // Switch next led
-          next();
+//          next();
+          
+          // Switch leds according get request params
+          params(requestFirstLine);
+
           
           // Send a standard http response header
           client.println("HTTP/1.1 200 OK");
@@ -141,5 +145,68 @@ void next() {
   digitalWrite(prev, LOW);
   digitalWrite(current, HIGH);
   delay(1000); 
+}
+
+
+/**
+ * Params
+ * - Switch leds according params
+ */
+void params(String requestFirstLine) {
+  // Print request params
+  Serial.print("- Request Info:");
+  Serial.print(requestFirstLine);
+
+  // Check get parameters: Green light
+  if(requestFirstLine.indexOf("green=on") >0) {
+    digitalWrite(4, HIGH);
+    stateGreen = 1;
+    Serial.println("- Switching green light to ON!");
+  }
+  if(requestFirstLine.indexOf("green=off") >0) {
+    digitalWrite(4, LOW);
+    stateGreen = 0;
+    Serial.println("- Switching green light to OFF!");
+  }
+
+  // Check get parameters: Yellow light
+  if(requestFirstLine.indexOf("yellow=on") >0) {
+    digitalWrite(5, HIGH);
+    stateYellow = 1;
+    Serial.println("- Switching yellow light to ON!");
+  }
+  if(requestFirstLine.indexOf("yellow=off") >0) {
+    digitalWrite(5, LOW);
+    stateYellow = 0;
+    Serial.println("- Switching yellow light to OFF!");
+  }
+
+  // Check get parameters: Red light
+  if(requestFirstLine.indexOf("red=on") >0) {
+    digitalWrite(6, HIGH);
+    stateRed = 1;
+    Serial.println("- Switching red light to ON!");
+  }
+  if(requestFirstLine.indexOf("red=off") >0) {
+    digitalWrite(6, LOW);
+    stateRed = 0;
+    Serial.println("- Switching red light to OFF!");
+  }
+
+  // Check get parameters: All lights
+  if(requestFirstLine.indexOf("all=on") >0) {
+    digitalWrite(4, HIGH);
+    digitalWrite(5, HIGH);
+    digitalWrite(6, HIGH);
+    stateGreen = stateYellow = stateRed = 1;
+    Serial.println("- Switching all lights to ON!");
+  }
+  if(requestFirstLine.indexOf("all=off") >0) {
+    digitalWrite(4, LOW);
+    digitalWrite(5, LOW);
+    digitalWrite(6, LOW);
+    stateGreen = stateYellow = stateRed = 0;
+    Serial.println("- Switching all lights to OFF!");
+  }
 }
 
