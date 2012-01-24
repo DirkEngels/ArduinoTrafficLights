@@ -7,6 +7,8 @@
  * https://github.com/DirkEngels/ArduinoTrafficLights
  */ 
 
+int current = 4;
+
 /**
  * Setup
  * - Set output pins
@@ -29,5 +31,25 @@ void setup() {
  * - Blink leds
  */
 void loop() {
+  next();
+}
 
+/**
+ * Next
+ * - Switch off previous led
+ * - Switch on next led
+ */
+void next() {
+  int prev = current;
+  current = (current>=7) ? 4 : current+1;
+
+  Serial.println("Switching leds");
+  Serial.print("- Prev: ");
+  Serial.println(prev);
+  Serial.print("- Next: ");
+  Serial.println(current);
+
+  digitalWrite(prev, LOW);
+  digitalWrite(current, HIGH);
+  delay(1000); 
 }
