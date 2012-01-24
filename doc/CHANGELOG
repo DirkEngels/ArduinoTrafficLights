@@ -1,0 +1,17 @@
+Change Log
+==========
+
+Version 1.0 (roadmap)
+---------------------
+- Switching 3 leds/relays
+- Enable serial debugging
+- Built-in web server
+- Custom template
+
+
+
+Version 0.1 (planned)
+---------------------
+- Create basic project structure
+- Add serial support for debugging purposes
+- Blink three leds
