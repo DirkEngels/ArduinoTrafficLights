@@ -34,6 +34,9 @@ void setup() {
   pinMode(5, OUTPUT);      // Yellow light
   pinMode(6, OUTPUT);      // Red light
   pinMode(7, OUTPUT);      // Optional Power/Progress light
+  
+  // Switch on power/progress led
+  digitalWrite(7, HIGH);
 
   // Setup serial debugging support
   Serial.begin(9600);
@@ -46,6 +49,9 @@ void setup() {
   // Start the webserver
   Serial.println("Starting webserver");
   server.begin();
+  
+  // Switch off power/progress led
+  digitalWrite(7, LOW);
 }
 
 /**
