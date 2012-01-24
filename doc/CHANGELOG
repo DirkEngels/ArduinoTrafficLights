@@ -9,9 +9,15 @@ Version 1.0 (roadmap)
 - Custom template
 
 
-Version 0.3 (planned)
+Version 0.4 (planned)
 ---------------------
-- Blink lights during setup
+- remove external stylesheet
+- replace external logo with base64 encoded image
+
+
+Version 0.2 (24-01-2012)
+========================
++ Blink lights during setup
 + Create http response
 + Implement custom template
 
