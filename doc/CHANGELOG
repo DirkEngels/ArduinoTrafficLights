@@ -9,11 +9,18 @@ Version 1.0 (roadmap)
 - Custom template
 
 
-Version 0.2 (planned)
+Version 0.3 (planned)
 ---------------------
+- Blink lights during setup
+- Create http response
+- Implement custom template
+
+
+Version 0.2 (24-01-2012)
+========================
 + Add webserver support
 + Get request params
-- Switch led according params
++ Switch led according params
 
 
 Version 0.1 (24-01-2012)
