@@ -11,8 +11,9 @@ Version 1.0 (roadmap)
 
 Version 0.4 (planned)
 ---------------------
-- remove external stylesheet
-- replace external logo with base64 encoded image
++ remove external stylesheet
++ replace external logo with base64 encoded image
+- minimize logo size
 
 
 Version 0.2 (24-01-2012)
