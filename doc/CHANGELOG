@@ -10,6 +10,11 @@ Version 1.0 (feature roadmap)
 + Include image(s)
 
 
+Version 0.5
+-----------
++ merge test script for looping lights from github.com/dynom
+- add minimal response option
+
 Version 0.4 (24-12-2012)
 ========================
 + remove external stylesheet
